@@ -130,3 +130,155 @@ class Minesweeper:
                 messagebox.showerror('Bad input', 'Could not parse custom difficulty')
                 return
         self.new_game()
+
+#Mekanikgame_BagianExcel
+
+    def new_game(self):
+        # reset game state
+        self.paused = False
+        self.game_over = False
+        self.start_time = None
+        self.elapsed = 0
+        self.flags_left = self.mines
+        self.cells = []
+        self.mine_label.config(text=f'Mines: {self.flags_left}')
+        self.timer_label.config(text='Time: 0')
+        # clear board frame
+        for w in self.board_frame.winfo_children():
+            w.destroy()
+        self.buttons = [[None]*self.cols for _ in range(self.rows)]
+        self.hidden = [[True]*self.cols for _ in range(self.rows)]
+        self.flagged = [[False]*self.cols for _ in range(self.rows)]
+        self.questioned = [[False]*self.cols for _ in range(self.rows)]
+        self.mined = [[False]*self.cols for _ in range(self.rows)]
+        self.adj = [[0]*self.cols for _ in range(self.rows)]
+
+        for r in range(self.rows):
+            for c in range(self.cols):
+                b = tk.Button(self.board_frame, text=ICONS['hidden'], width=2, height=1,
+                              font=('Helvetica', 14), command=lambda r=r,c=c: self.on_left(r,c))
+                # original on_right expects (r,c), so use lambda that ignores event
+                b.bind('<Button-3>', lambda e, r=r, c=c: self.on_right(r,c))
+                b.grid(row=r, column=c)
+                self.buttons[r][c] = b
+        # build mines when first click occurs
+        self.first_click = True
+        # start timer update loop
+        self.master.after(200, self.update_timer)
+
+    def replay(self):
+        # replay current difficulty
+        self.new_game()
+
+    def toggle_pause(self):
+        if self.game_over: return
+        self.paused = not self.paused
+        if self.paused:
+            self.pause_btn.config(text='Resume')
+        else:
+            self.pause_btn.config(text='Pause')
+            # resume timer base
+            if self.start_time is None:
+                self.start_time = time.time() - self.elapsed
+
+    def update_timer(self):
+        if not getattr(self,'paused',False) and not getattr(self,'game_over',False):
+            if self.start_time:
+                self.elapsed = int(time.time() - self.start_time)
+                self.timer_label.config(text=f'Time: {self.elapsed}')
+        self.master.after(200, self.update_timer)
+
+    def plant_mines(self, safe_r, safe_c):
+        spots = [(r,c) for r in range(self.rows) for c in range(self.cols)]
+        # remove the safe square and its neighbors
+        safe = set()
+        for dr in (-1,0,1):
+            for dc in (-1,0,1):
+                rr, cc = safe_r+dr, safe_c+dc
+                if 0<=rr<self.rows and 0<=cc<self.cols:
+                    safe.add((rr,cc))
+        candidates = [s for s in spots if s not in safe]
+        mines = random.sample(candidates, self.mines)
+        for (r,c) in mines:
+            self.mined[r][c] = True
+        # compute adjacency
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.mined[r][c]:
+                    self.adj[r][c] = -1
+                    continue
+                cnt = 0
+                for dr in (-1,0,1):
+                    for dc in (-1,0,1):
+                        rr, cc = r+dr, c+dc
+                        if 0<=rr<self.rows and 0<=cc<self.cols and self.mined[rr][cc]:
+                            cnt += 1
+                self.adj[r][c] = cnt
+
+    def reveal(self, r, c):
+        if self.hidden[r][c] and not self.flagged[r][c]:
+            self.hidden[r][c] = False
+            b = self.buttons[r][c]
+            if self.mined[r][c]:
+                # show bomb emoji
+                b.config(text=ICONS['bomb'], disabledforeground='red')
+                b.config(relief='sunken')
+                return 'mine'
+            val = self.adj[r][c]
+            if val == 0:
+                b.config(text='', relief='sunken')
+                # flood fill neighbors
+                for dr in (-1,0,1):
+                    for dc in (-1,0,1):
+                        rr, cc = r+dr, c+dc
+                        if 0<=rr<self.rows and 0<=cc<self.cols and self.hidden[rr][cc]:
+                            self.reveal(rr,cc)
+            else:
+                # set colored number
+                b.config(text=str(val), relief='sunken')
+                # set fg color if using number color map
+                try:
+                    b.config(fg=COLOR_MAP.get(val, 'black'))
+                except Exception:
+                    pass
+            return 'ok'
+        return None
+
+    def on_left(self, r, c):
+        if self.game_over or getattr(self,'paused',False): return
+        
+        if self.first_click:
+            self.plant_mines(r,c)
+            self.first_click = False
+            self.start_time = time.time()
+
+        res = self.reveal(r,c)
+        if res == 'mine':
+            self.game_lost()
+            return
+        # check win
+        if self.check_win():
+            self.game_won()
+
+    def on_right(self, r, c):
+        if self.game_over or getattr(self,'paused',False): return 'break'
+        if self.hidden[r][c]:
+            # cycle flag -> question -> hidden
+            if not self.flagged[r][c] and not self.questioned[r][c]:
+                self.flagged[r][c] = True
+                # show flag emoji
+                self.buttons[r][c].config(text=ICONS['flag'], image='')
+                self.buttons[r][c].image = None
+                self.flags_left -= 1
+            elif self.flagged[r][c]:
+                self.flagged[r][c] = False
+                self.questioned[r][c] = True
+                self.buttons[r][c].config(text=ICONS['question'], image='')
+                self.buttons[r][c].image = None
+                self.flags_left += 1
+            elif self.questioned[r][c]:
+                self.questioned[r][c] = False
+                self.buttons[r][c].config(text=ICONS['hidden'])
+        self.mine_label.config(text=f'Mines: {self.flags_left}')
+        # consume event
+        return 'break'
