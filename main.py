@@ -346,3 +346,9 @@ class Minesweeper:
         for i,sc in enumerate(items, start=1):
             s += f'{i}. {sc} sec\n'
         messagebox.showinfo('Highscores', s)
+
+# ---------------- Entry point ----------------
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = Minesweeper(root)
+    root.mainloop()
