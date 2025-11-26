@@ -282,3 +282,67 @@ class Minesweeper:
         self.mine_label.config(text=f'Mines: {self.flags_left}')
         # consume event
         return 'break'
+
+    def check_win(self):
+        # win if all non-mine cells revealed
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if not self.mined[r][c] and self.hidden[r][c]:
+                    return False
+        return True
+
+    def game_lost(self):
+        self.game_over = True
+        # reveal all mines
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.mined[r][c]:
+                    # show bomb emoji
+                    self.buttons[r][c].config(text=ICONS['bomb'])
+                    self.buttons[r][c].image = None # ensure no image is left
+        messagebox.showinfo('Game Over', 'You hit a mine!')
+
+    def game_won(self):
+        self.game_over = True
+        # stop timer and save highscore
+        if self.start_time:
+            self.elapsed = int(time.time() - self.start_time)
+        else:
+            self.elapsed = 0
+        messagebox.showinfo('You Win!', f'Congratulations — time: {self.elapsed} sec')
+        self.save_highscore(self.elapsed)
+
+    # Highscore persistence
+    def load_highscores(self):
+        if os.path.exists(HIGHSCORE_FILE):
+            try:
+                with open(HIGHSCORE_FILE,'r') as f:
+                    self.highscores = json.load(f)
+            except Exception:
+                self.highscores = {}
+        else:
+            self.highscores = {}
+
+    def save_highscore(self, t):
+        key = self.difficulty
+        if key not in self.highscores:
+            self.highscores[key] = []
+        self.highscores[key].append(int(t))
+        self.highscores[key] = sorted(self.highscores[key])[:5]
+        try:
+            with open(HIGHSCORE_FILE,'w') as f:
+                json.dump(self.highscores, f)
+        except Exception as e:
+            print('Could not save highscores', e)
+
+    def show_highscores(self):
+        self.load_highscores()
+        key = self.difficulty
+        items = self.highscores.get(key, [])
+        if not items:
+            messagebox.showinfo('Highscores', f'No highscores for {key}')
+            return
+        s = f'Highscores for {key}:\n'
+        for i,sc in enumerate(items, start=1):
+            s += f'{i}. {sc} sec\n'
+        messagebox.showinfo('Highscores', s)
