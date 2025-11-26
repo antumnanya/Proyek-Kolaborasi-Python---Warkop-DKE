@@ -50,7 +50,7 @@ COLOR_MAP = {
 }
 
 class Minesweeper:
-    
+# Bagian Gideon UI Menu
     def __init__(self, master):
         self.master = master
         self.master.title('Minesweeper')
@@ -87,7 +87,7 @@ class Minesweeper:
         self.new_btn = tk.Button(btns, text='New Game', command=self.show_new_game_dialog)
         self.new_btn.pack(side='left', padx=4)
 
-        # Difficulty selector
+        # Memilih tingkat kesulitan
         diff_frame = tk.Frame(self.master)
         diff_frame.pack(side='top', pady=4)
         tk.Label(diff_frame, text='Difficulty:').pack(side='left')
@@ -105,14 +105,14 @@ class Minesweeper:
         tk.Label(hs_frame, text='Highscores (time in sec):').pack(side='left')
         self.hs_button = tk.Button(hs_frame, text='Show', command=self.show_highscores)
         self.hs_button.pack(side='left', padx=6)
-
+    # Mengubah kesulitan game
     def change_difficulty(self):
         self.difficulty = self.diff_var.get()
         self.rows, self.cols, self.mines = DEFAULTS[self.difficulty]
         self.new_game()
 
     def show_new_game_dialog(self):
-        # Custom sizes
+        # Mengubah ukuran jendela tampilan
         d = simpledialog.askstring('New Game', 'Enter difficulty Easy/Medium/Hard or custom as R,C,M (e.g. 10,10,12)')
         if not d: return
         d = d.strip()
