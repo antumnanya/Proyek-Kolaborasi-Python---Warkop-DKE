@@ -9,8 +9,17 @@
 
 **3. Gideon Pangemanan - 250211060059**  ([gideonridel](https://github.com/gideonridel))
 
-## Deskripsi PROYEK
-Proyek ini adalah kolaborasi dari anggota kelompok yang berupa pembuatan game **minesweeper** dengan menggunakkan pemrogramman python
+## Deskripsi Proyek
+Program yang kami buat merupakan replika dari permainan komputer ***minesweeper*** yang populer di tahun 1990-2000an. Program ini merupakan bentuk kolaborasi 
+tim dalam pemrograman game python. Setiap anggota turut mengambil bagian dalam penulisan kode program.
+
+***Minesweeper*** merupakan game logika yang berpadu dengan ketelitian. Di dalam game ini, pemain harus menebak posisi bom yang diletakkan secara
+acak dan memilih kotak atau *tile* yang tidak berisi bom. Permainan berakhir apabila pemain bisa memilih semua *tile* kosong (**Menang**), atau ketika 
+pemain memilih *tile* yang berisi bom (**Kalah**). Skor pemain dinilai dari seberapa cepat permainan dimenangkan dan disimpan dalam *leaderboard*.
+
+Selain untuk bersenang-senang, game ini juga bisa melatih kecekatan dan ketepatan kemampuan otak dalam mengolah data riil. Ini tentu saja berguna untuk membentuk
+kemampuan berpikir kritis yang sangat diperlukan di era digital, terutama di bidang informatika. Untuk itu kelompok kami memilih game ***minesweeper***
+sebagai proyek kolaborasi kali ini karena selain menyenangkan, proyek kami bisa membantu untuk melatih kemampuan siswa informatika untuk berpikir kritis.
 
 ## Fitur-fitur
  |             Kategori            |           Fitur            | Detail kode | 
