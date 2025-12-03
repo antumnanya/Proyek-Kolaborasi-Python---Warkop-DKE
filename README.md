@@ -3,11 +3,11 @@
 
 # Anggota Kolaborasi:
 
-**1. Excellentio Potalangi - 250211060003**  ([potalangiexcel-da](https://github.com/potalangiexcel-da))
+**1. Kobar Pontolondo - 250211060041  - Project Maintainer**  ([antumnanya](https://github.com/antumnanya))
 
-**2. Kobar Pontolondo - 250211060041**  ([antumnanya](https://github.com/antumnanya))
+**2. Excellentio Potalangi - 250211060003 - Kolaborator**  ([potalangiexcel-da](https://github.com/potalangiexcel-da))
 
-**3. Gideon Pangemanan - 250211060059**  ([gideonridel](https://github.com/gideonridel))
+**3. Gideon Pangemanan - 250211060059 - Kolaborator**  ([gideonridel](https://github.com/gideonridel))
 
 # Pembuatan Aplikasi Minesweeper
 ## Deskripsi Proyek
