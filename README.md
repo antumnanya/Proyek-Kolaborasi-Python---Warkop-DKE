@@ -1,7 +1,7 @@
 # Proyek Kolaborasi Python Warkop DKE
 **SELAMAT DATANG DI PROYEK KOLABORASI PYTHON WARKOP DKE**
 
-## Anggota Kolaborasi:
+# Anggota Kolaborasi:
 
 **1. Excellentio Potalangi - 250211060003**  ([potalangiexcel-da](https://github.com/potalangiexcel-da))
 
@@ -9,6 +9,7 @@
 
 **3. Gideon Pangemanan - 250211060059**  ([gideonridel](https://github.com/gideonridel))
 
+# Pembuatan Aplikasi Minesweeper
 ## Deskripsi Proyek
 Program yang kami buat merupakan replika dari permainan komputer ***minesweeper*** yang populer di tahun 1990-2000an. Program ini merupakan bentuk kolaborasi 
 tim dalam pemrograman game python. Setiap anggota turut mengambil bagian dalam penulisan kode program.
