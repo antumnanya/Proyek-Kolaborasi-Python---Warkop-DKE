@@ -53,7 +53,7 @@ Sebelum menjalankan program ini, pastikan sudah menginstall beberapa program ber
   git clone https://github.com/antumnanya/Proyek-Kolaborasi-Python---Warkop-DKE.git
 ```
 
-### Menjalankan file program
+## Menjalankan file program
 1. Buka terminal dan pilih direktori folder yang berisi repositori
 ```bash
   cd "[direktori folder sebelumnya]
@@ -68,3 +68,8 @@ Sebelum menjalankan program ini, pastikan sudah menginstall beberapa program ber
 ```
 > 'main.py' merupakan file utama untuk menjalankan program kami
 4. Selamat Bermain!
+
+## Dokumentasi Teknis(Flowchart)
+![photo_2025-12-03_11-40-01](https://github.com/user-attachments/assets/c9238502-7c11-4ba5-92a8-099829f91256)
+![2](https://github.com/user-attachments/assets/375dd8db-e022-4a72-a718-349d1ca883df)
+
